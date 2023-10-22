@@ -27,12 +27,7 @@ public class FinancialTracker {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
-        addPayment(scanner);
-
-        for (Transaction t: transactions) {
-            System.out.println(t);
-        }
-
+        displayLedger();
 
 
  /*       while (running) {
@@ -170,11 +165,14 @@ public class FinancialTracker {
                     break;
             }
         }
-    }
+    }*/
 
     private static void displayLedger() {
-        // This method should display a table of all transactions in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, type, and amount.
+        // Display a table of all transactions in the `transactions` ArrayList
+        System.out.println("date" + "|time" + "|vendor" + "|description" + "|amount\n");
+        for (Transaction t: transactions) {
+            System.out.println(t);
+        }
     }
 
     private static void displayDeposits() {
@@ -187,7 +185,7 @@ public class FinancialTracker {
         // The table should have columns for date, time, vendor, and amount.
     }
 
-    private static void reportsMenu(Scanner scanner) {
+/*    private static void reportsMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
             System.out.println("Reports");
@@ -225,10 +223,10 @@ public class FinancialTracker {
                     break;
             }
         }
-    }
+    }*/
 
 
-    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
+ /*   private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
         // The method loops through the transactions list and checks each transaction's date against the date range.
