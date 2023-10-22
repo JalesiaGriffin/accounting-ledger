@@ -19,7 +19,17 @@ public class Transaction {
     }
 
     public Transaction(Deposit deposit) {
+        this.date = deposit.getDate();
+        this.time = deposit.getTime();
+        this.vendor = deposit.getVendor();
+        this.amount = deposit.getAmount();
+    }
 
+    public Transaction(Payment payment) {
+        this.date = payment.getDate();
+        this.time = payment.getTime();
+        this.vendor = payment.getVendor();
+        this.amount = payment.getAmount();
     }
 
     public LocalDate getDate() {
