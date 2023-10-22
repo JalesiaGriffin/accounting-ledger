@@ -18,6 +18,10 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public Transaction(Deposit deposit) {
+
+    }
+
     public LocalDate getDate() {
         return date;
     }
