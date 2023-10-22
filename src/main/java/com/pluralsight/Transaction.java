@@ -21,6 +21,7 @@ public class Transaction {
     public Transaction(Deposit deposit) {
         this.date = deposit.getDate();
         this.time = deposit.getTime();
+        this.description = "Deposit";
         this.vendor = deposit.getVendor();
         this.amount = deposit.getAmount();
     }
@@ -28,6 +29,7 @@ public class Transaction {
     public Transaction(Payment payment) {
         this.date = payment.getDate();
         this.time = payment.getTime();
+        this.description = "Payment";
         this.vendor = payment.getVendor();
         this.amount = payment.getAmount();
     }
