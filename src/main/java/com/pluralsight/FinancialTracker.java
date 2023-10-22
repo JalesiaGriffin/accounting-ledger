@@ -27,7 +27,7 @@ public class FinancialTracker {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
-        addDeposit(scanner);
+        addPayment(scanner);
 
         for (Transaction t: transactions) {
             System.out.println(t);
@@ -96,11 +96,7 @@ public class FinancialTracker {
     }
 
     private static void addDeposit(Scanner scanner) {
-        // This method should prompt the user to enter the date, time, vendor, and amount of a deposit.
-        // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
-        // The amount should be a positive number.
-        // After validating the input, a new `Deposit` object should be created with the entered values.
-        // The new deposit should be added to the `transactions` ArrayList.
+        // Prompt the user for deposit info
         System.out.println("Add a Deposit");
         System.out.print("Deposit Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
@@ -114,18 +110,34 @@ public class FinancialTracker {
         System.out.print("Amount: ");
         double amount = scanner.nextDouble();
 
+        // The amount should be a positive number.
+
+        // Add to transactions
         transactions.add(new Transaction(new Deposit(date, time, vendor, amount)));
     }
 
-/*    private static void addPayment(Scanner scanner) {
-        // This method should prompt the user to enter the date, time, vendor, and amount of a payment.
-        // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
+    private static void addPayment(Scanner scanner) {
+        // Prompt the user for payment info
+        System.out.println("Add a Payment");
+        System.out.print("Payment Date (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+
+        System.out.print("Payment Time (HH:mm:ss): ");
+        LocalTime time = LocalTime.parse(scanner.nextLine(), TIME_FORMATTER);
+
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Amount: ");
+        double amount = scanner.nextDouble();
+
         // The amount should be a positive number.
-        // After validating the input, a new `Payment` object should be created with the entered values.
+
         // The new payment should be added to the `transactions` ArrayList.
+        transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
     }
 
-    private static void ledgerMenu(Scanner scanner) {
+/*    private static void ledgerMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
             System.out.println("Ledger");
