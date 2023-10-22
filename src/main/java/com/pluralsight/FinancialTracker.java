@@ -27,7 +27,12 @@ public class FinancialTracker {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
-        while (running) {
+
+        for (Transaction t: transactions) {
+            System.out.println(t);
+        }
+
+ /*       while (running) {
             System.out.println("Welcome to TransactionApp");
             System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
@@ -55,8 +60,8 @@ public class FinancialTracker {
                     break;
             }
         }
-
-        scanner.close();
+*/
+        //scanner.close();
     }
 
     public static void loadTransactions(String fileName) {
@@ -68,9 +73,35 @@ public class FinancialTracker {
         // For example: 2023-04-29,13:45:00,Amazon,PAYMENT,29.99
         // After reading all the transactions, the file should be closed.
         // If any errors occur, an appropriate error message should be displayed.
+
+        try {
+            // open reader
+            BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME));
+            String input;
+
+            // read file
+            while ((input = reader.readLine()) != null) {
+                String[] tokens = input.split("\\|");
+                LocalDate date = LocalDate.parse(tokens[0], DATE_FORMATTER);
+                LocalTime time = LocalTime.parse(tokens[1], TIME_FORMATTER);
+                String description = tokens[2];
+                String vendor = tokens[3];
+                double price = Double.parseDouble(tokens[4]);
+
+                // create/add products
+                Transaction transaction = new Transaction(date, time, description, vendor, price);
+                transactions.add(transaction);
+            }
+
+            // close reader
+            reader.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void addDeposit(Scanner scanner) {
+/*    private static void addDeposit(Scanner scanner) {
         // This method should prompt the user to enter the date, time, vendor, and amount of a deposit.
         // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
         // The amount should be a positive number.
@@ -191,5 +222,5 @@ public class FinancialTracker {
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }
+    }*/
 }
