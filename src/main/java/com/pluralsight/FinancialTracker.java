@@ -27,10 +27,7 @@ public class FinancialTracker {
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
-        displayPayments();
-
-
- /*       while (running) {
+        while (running) {
             System.out.println("Welcome to TransactionApp");
             System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
@@ -58,8 +55,7 @@ public class FinancialTracker {
                     break;
             }
         }
-*/
-        //scanner.close();
+        scanner.close();
     }
 
     public static void loadTransactions(String fileName) {
@@ -132,7 +128,7 @@ public class FinancialTracker {
         transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
     }
 
-/*    private static void ledgerMenu(Scanner scanner) {
+    private static void ledgerMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
             System.out.println("Ledger");
@@ -165,7 +161,7 @@ public class FinancialTracker {
                     break;
             }
         }
-    }*/
+    }
 
     private static void displayLedger() {
         // Display a table of all transactions in the `transactions` ArrayList
@@ -212,7 +208,7 @@ public class FinancialTracker {
 
             switch (input) {
                 case "1":
-                    // current month
+                    // Current month
                     for (Transaction t: transactions) {
                         if (t.getDate().getMonth() == date.getMonth()) {
                             System.out.println(t);
@@ -245,7 +241,15 @@ public class FinancialTracker {
                     break;
                 case "5":
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
-                    // with that vendor, including the date, vendor, and amount for each transaction.
+                    System.out.println("Vendor Name: ");
+                    String vendor = scanner.nextLine();
+
+                    for (Transaction t: transactions) {
+                        if (t.getVendor().equalsIgnoreCase(vendor)) {
+                            System.out.println(t);
+                        }
+                    }
+                    break;
                 case "0":
                     running = false;
                 default:
