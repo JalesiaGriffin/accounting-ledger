@@ -212,35 +212,37 @@ public class FinancialTracker {
 
             switch (input) {
                 case "1":
-                    // Generate a report for all transactions within the current month,
+                    // current month
                     for (Transaction t: transactions) {
                         if (t.getDate().getMonth() == date.getMonth()) {
                             System.out.println(t);
                         }
                     }
                     break;
-                    // including the date, vendor, and amount for each transaction.
                 case "2":
-                    // Generate a report for all transactions within the previous month,
+                    // Previous month
                     for (Transaction t: transactions) {
-                        if (t.getDate().getMonth().minus(1) == date.getMonth().minus(1)) {
+                        if (t.getDate().minusMonths(1).getMonth() == date.minusMonths(1).getMonth()) {
                             System.out.println(t);
                         }
                     }
                     break;
-                    // including the date, vendor, and amount for each transaction.
                 case "3":
-                    // Generate a report for all transactions within the current year,
+                    // Current year
                     for (Transaction t: transactions) {
-                        if (t.getDate().getYear() == date.getYear()) {
+                    if (t.getDate().getYear() == date.getYear()) {
+                        System.out.println(t);
+                    }
+                }
+                    break;
+                case "4":
+                    // Previous year
+                    for (Transaction t: transactions) {
+                        if (t.getDate().minusYears(1).getYear() == date.minusYears(1).getYear()) {
                             System.out.println(t);
                         }
                     }
                     break;
-                    // including the date, vendor, and amount for each transaction.
-                case "4":
-                    // Generate a report for all transactions within the previous year,
-                    // including the date, vendor, and amount for each transaction.
                 case "5":
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
                     // with that vendor, including the date, vendor, and amount for each transaction.
