@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.text.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,12 +30,11 @@ public class FinancialTracker {
 
         while (running) {
             System.out.println("\nWelcome to TransactionApp");
-            System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
             System.out.println("X) Exit");
-
+            System.out.print("Choose an option: ");
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
@@ -55,7 +55,6 @@ public class FinancialTracker {
                     break;
             }
         }
-        scanner.close();
     }
 
     public static void loadTransactions(String fileName) {
@@ -88,7 +87,7 @@ public class FinancialTracker {
 
     private static void addDeposit(Scanner scanner) {
         // Prompt the user for deposit info
-        System.out.println("Add a Deposit");
+        System.out.println("\nAdd a Deposit");
         System.out.print("Deposit Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
 
@@ -108,6 +107,8 @@ public class FinancialTracker {
             amount = scanner.nextDouble();
             scanner.nextLine();
         }
+        // Close scanner
+        scanner.close();
 
         // Add to transactions
         transactions.add(new Transaction(new Deposit(date, time, vendor, amount)));
@@ -115,7 +116,7 @@ public class FinancialTracker {
 
     private static void addPayment(Scanner scanner) {
         // Prompt the user for payment info
-        System.out.println("Add a Payment");
+        System.out.println("\nAdd a Payment");
         System.out.print("Payment Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
 
@@ -139,18 +140,19 @@ public class FinancialTracker {
 
         // The new payment should be added to the `transactions` ArrayList
         transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
+
     }
 
     private static void ledgerMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("Ledger");
-            System.out.println("Choose an option:");
+            System.out.println("\nLedger");
             System.out.println("A) All");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
             System.out.println("R) Reports");
             System.out.println("H) Home");
+            System.out.print("Choose an option: ");
 
             String input = scanner.nextLine().trim();
 
@@ -174,32 +176,34 @@ public class FinancialTracker {
                     break;
             }
         }
+    // Close scanner
+    scanner.close();
     }
 
     private static void displayLedger() {
-        // Display a table of all transactions in the `transactions` ArrayList
-        System.out.println("\ndate" + "|time" + "|vendor" + "|description" + "|amount\n");
+        // Table of all transaction
+        printTableHeader();
         for (Transaction t: transactions) {
-            System.out.println(t);
+            printTable(t);
         }
     }
 
     private static void displayDeposits() {
-        // Display a table of all deposits in the `transactions` ArrayList
-        System.out.println("\ndate" + "|time" + "|vendor" + "|description" + "|amount\n");
+        // Table of deposits
+        printTableHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().equals("Deposit")) {
-                System.out.println(t);
+            if (t.getDescription().contains("Deposit")) {
+                printTable(t);
             }
         }
     }
 
     private static void displayPayments() {
-        // Display a table of all payments in the `transactions` ArrayList
-        System.out.println("\ndate" + "|time" + "|vendor" + "|description" + "|amount\n");
+        // Table of payments
+        printTableHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().equals("Payment")) {
-                System.out.println(t);
+            if (t.getDescription().contains("Payment")) {
+                printTable(t);
             }
         }
     }
@@ -207,7 +211,7 @@ public class FinancialTracker {
     private static void reportsMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("Reports");
+            System.out.println("\nReports");
             System.out.println("Choose an option:");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
@@ -270,10 +274,11 @@ public class FinancialTracker {
                     break;
             }
         }
+    // Close scanner
+    scanner.close();
     }
 
-
-/*    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate, String input) {
+/*    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
         // The method loops through the transactions list and checks each transaction's date against the date range.
@@ -288,4 +293,14 @@ public class FinancialTracker {
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }*/
+    public static void printTableHeader() {
+        System.out.println(String.format("n%s", "-------------------------------------------------------------------------------"));
+        System.out.println(String.format("%-15s %-15s %-20s %-15s %-15s", "Date", "Time",
+                "Description", "Vendor", "Amount"));
+        System.out.println(String.format("%s", "-------------------------------------------------------------------------------"));
+    }
+    public static void printTable(Transaction t) {
+            System.out.println(String.format("%-15s %-15s %-20s %-15s %-15s", t.getDate(), t.getTime(),
+                    t.getDescription(), t.getVendor(), t.getAmount()));
+    }
 }
