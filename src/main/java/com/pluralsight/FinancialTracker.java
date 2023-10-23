@@ -28,6 +28,7 @@ public class FinancialTracker {
         boolean running = true;
 
         displayLedger();
+        displayDeposits();
 
 
  /*       while (running) {
@@ -169,20 +170,24 @@ public class FinancialTracker {
 
     private static void displayLedger() {
         // Display a table of all transactions in the `transactions` ArrayList
-        System.out.println("date" + "|time" + "|vendor" + "|description" + "|amount\n");
+        System.out.println("\ndate" + "|time" + "|vendor" + "|description" + "|amount\n");
         for (Transaction t: transactions) {
             System.out.println(t);
         }
     }
 
     private static void displayDeposits() {
-        // This method should display a table of all deposits in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
+        // Display a table of all deposits in the `transactions` ArrayList
+        System.out.println("\ndate" + "|time" + "|vendor" + "|description" + "|amount\n");
+        for (Transaction t: transactions) {
+            if (t.getDescription().equals("Deposit")) {
+                System.out.println(t);
+            }
+        }
     }
 
     private static void displayPayments() {
-        // This method should display a table of all payments in the `transactions` ArrayList.
-        // The table should have columns for date, time, vendor, and amount.
+
     }
 
 /*    private static void reportsMenu(Scanner scanner) {
