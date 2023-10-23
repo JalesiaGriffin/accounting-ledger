@@ -28,7 +28,7 @@ public class FinancialTracker {
         boolean running = true;
 
         while (running) {
-            System.out.println("Welcome to TransactionApp");
+            System.out.println("\nWelcome to TransactionApp");
             System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
@@ -102,6 +102,12 @@ public class FinancialTracker {
         double amount = scanner.nextDouble();
 
         // The amount should be a positive number.
+        while (amount < 0) {
+            System.out.println("Invalid. Enter a positive value.");
+            System.out.print("Amount: ");
+            amount = scanner.nextDouble();
+            scanner.nextLine();
+        }
 
         // Add to transactions
         transactions.add(new Transaction(new Deposit(date, time, vendor, amount)));
@@ -121,8 +127,15 @@ public class FinancialTracker {
 
         System.out.print("Amount: ");
         double amount = scanner.nextDouble();
+        scanner.nextLine();
 
         // The amount should be a positive number
+        while (amount < 0) {
+            System.out.println("Invalid. Enter a positive value.");
+            System.out.print("Amount: ");
+            amount = scanner.nextDouble();
+            scanner.nextLine();
+        }
 
         // The new payment should be added to the `transactions` ArrayList
         transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
