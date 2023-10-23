@@ -1,6 +1,5 @@
 package com.pluralsight;
 
-import java.text.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,13 +72,8 @@ public class FinancialTracker {
                 double price = Double.parseDouble(tokens[4]);
 
                 // create/add products
-                Transaction transaction = new Transaction(date, time, description, vendor, price);
-                transactions.add(transaction);
+                transactions.add(new Transaction(date, time, description, vendor, price));
             }
-
-            // close reader
-            reader.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,15 +101,23 @@ public class FinancialTracker {
             amount = scanner.nextDouble();
             scanner.nextLine();
         }
-        // Close scanner
-        scanner.close();
 
         // Add to transactions
         transactions.add(new Transaction(new Deposit(date, time, vendor, amount)));
+
+        //update transactions.csv
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
+            writer.write("\n" + date + "|" + time + "|Deposit|" + vendor + "|" + amount);
+            writer.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void addPayment(Scanner scanner) {
-        // Prompt the user for payment info
+        // Prompt user for payment info
         System.out.println("\nAdd a Payment");
         System.out.print("Payment Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
@@ -138,9 +140,19 @@ public class FinancialTracker {
             scanner.nextLine();
         }
 
-        // The new payment should be added to the `transactions` ArrayList
+        amount *= -1;
+
+        // Add payment to the `transactions` ArrayList
         transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
 
+        // Update transactions.csv
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
+            writer.write("\n" + date + "|" + time + "|Payment|" + vendor + "|" + amount);
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void ledgerMenu(Scanner scanner) {
@@ -176,8 +188,6 @@ public class FinancialTracker {
                     break;
             }
         }
-    // Close scanner
-    scanner.close();
     }
 
     private static void displayLedger() {
@@ -192,7 +202,7 @@ public class FinancialTracker {
         // Table of deposits
         printTableHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().contains("Deposit")) {
+            if (t.getDescription().contains("deposit")) {
                 printTable(t);
             }
         }
@@ -202,7 +212,7 @@ public class FinancialTracker {
         // Table of payments
         printTableHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().contains("Payment")) {
+            if (t.getDescription().contains("payment")) {
                 printTable(t);
             }
         }
@@ -226,33 +236,37 @@ public class FinancialTracker {
             switch (input) {
                 case "1":
                     // Current month
+                    printTableHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().getMonth() == date.getMonth()) {
-                            System.out.println(t);
+                            printTable(t);
                         }
                     }
                     break;
                 case "2":
                     // Previous month
+                    printTableHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().minusMonths(1).getMonth() == date.minusMonths(1).getMonth()) {
-                            System.out.println(t);
+                            printTable(t);
                         }
                     }
                     break;
                 case "3":
                     // Current year
+                    printTableHeader();
                     for (Transaction t: transactions) {
                     if (t.getDate().getYear() == date.getYear()) {
-                        System.out.println(t);
+                        printTable(t);
                     }
                 }
                     break;
                 case "4":
                     // Previous year
+                    printTableHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().minusYears(1).getYear() == date.minusYears(1).getYear()) {
-                            System.out.println(t);
+                            printTable(t);
                         }
                     }
                     break;
@@ -260,10 +274,10 @@ public class FinancialTracker {
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
                     System.out.println("Vendor Name: ");
                     String vendor = scanner.nextLine();
-
+                    printTableHeader();
                     for (Transaction t: transactions) {
                         if (t.getVendor().equalsIgnoreCase(vendor)) {
-                            System.out.println(t);
+                            printTable(t);
                         }
                     }
                     break;
@@ -274,8 +288,6 @@ public class FinancialTracker {
                     break;
             }
         }
-    // Close scanner
-    scanner.close();
     }
 
 /*    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
@@ -294,13 +306,13 @@ public class FinancialTracker {
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }*/
     public static void printTableHeader() {
-        System.out.println(String.format("n%s", "-------------------------------------------------------------------------------"));
-        System.out.println(String.format("%-15s %-15s %-20s %-15s %-15s", "Date", "Time",
+        System.out.println(String.format("%s", "-------------------------------------------------------------------------------"));
+        System.out.println(String.format("%-25s %-25s %-30s %-25s %-25s", "Date", "Time",
                 "Description", "Vendor", "Amount"));
         System.out.println(String.format("%s", "-------------------------------------------------------------------------------"));
     }
     public static void printTable(Transaction t) {
-            System.out.println(String.format("%-15s %-15s %-20s %-15s %-15s", t.getDate(), t.getTime(),
+            System.out.println(String.format("%-25s %-25s %-30s %-25s %-25s", t.getDate(), t.getTime(),
                     t.getDescription(), t.getVendor(), t.getAmount()));
     }
 }
