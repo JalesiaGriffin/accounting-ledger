@@ -14,9 +14,9 @@ public class Tables {
     }
 
     public static void reportsHeader() {
-        System.out.println(String.format("%s", "------------------------------------------------------------------------------------------------------------------------"));
+        System.out.println(String.format("%s", "-------------------------------------------------------------"));
         System.out.println(String.format("%-25s %-25s %-25s", "Date", "Vendor", "Amount"));
-        System.out.println(String.format("%s", "------------------------------------------------------------------------------------------------------------------------"));
+        System.out.println(String.format("%s", "-------------------------------------------------------------"));
     }
 
     public static void fillReportsTable(Transaction t) {
