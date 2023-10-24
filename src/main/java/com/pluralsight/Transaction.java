@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 
 public class Transaction {
     private LocalDate date;
@@ -82,4 +83,13 @@ public class Transaction {
                 "|" + vendor +
                 "|" + amount;
     }
+
+    public static Comparator<Transaction> TransactionDate = new Comparator<Transaction>() {
+        @Override
+        public int compare(Transaction o1, Transaction o2) {
+            LocalDate date1 = o1.getDate();
+            LocalDate date2 = o2.getDate();
+            return date1.compareTo(date2);
+        }
+    };
 }
