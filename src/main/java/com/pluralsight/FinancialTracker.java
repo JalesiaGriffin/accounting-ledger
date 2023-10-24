@@ -184,28 +184,28 @@ public class FinancialTracker {
 
     private static void displayLedger() {
         // Table of all transaction
-        printTableHeader();
+        Tables.ledgerHeader();
         for (Transaction t: transactions) {
-            printTable(t);
+            Tables.fillLedgerTable(t);
         }
     }
 
     private static void displayDeposits() {
         // Table of deposits
-        printTableHeader();
+        Tables.ledgerHeader();
         for (Transaction t: transactions) {
             if (t.getDescription().toLowerCase().contains("deposit")) {
-                printTable(t);
+                Tables.fillLedgerTable(t);
             }
         }
     }
 
     private static void displayPayments() {
         // Table of payments
-        printTableHeader();
+        Tables.ledgerHeader();
         for (Transaction t: transactions) {
             if (t.getDescription().toLowerCase().contains("payment")) {
-                printTable(t);
+                Tables.fillLedgerTable(t);
             }
         }
     }
@@ -219,7 +219,7 @@ public class FinancialTracker {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
-            System.out.println("(6) Filter Transaction by Date");
+            System.out.println("6) Filter Transaction by Date");
             System.out.println("0) Back");
             System.out.print("Choose an option: ");
 
@@ -230,41 +230,41 @@ public class FinancialTracker {
             switch (input) {
                 case "1":
                     // Current month
-                    printTableHeader();
+                    Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().getMonth() == date.getMonth()) {
-                                printTable(t);
+                                Tables.fillReportsTable(t);
                             }
                         }
                     }
                     break;
                 case "2":
                     // Previous month
-                    printTableHeader();
+                    Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().withMonth(previousMonth.getMonthValue()) == previousMonth) {
-                                printTable(t);
+                                Tables.fillReportsTable(t);
                             }
                         }
                     }
                     break;
                 case "3":
                     // Current year
-                    printTableHeader();
+                    Tables.reportsHeader();
                     for (Transaction t: transactions) {
                     if (t.getDate().getYear() == date.getYear()) {
-                        printTable(t);
+                        Tables.fillReportsTable(t);
                     }
                 }
                     break;
                 case "4":
                     // Previous year
-                    printTableHeader();
+                    Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().minusYears(1).getYear() == date.minusYears(1).getYear()) {
-                            printTable(t);
+                            Tables.fillReportsTable(t);
                         }
                     }
                     break;
@@ -272,20 +272,24 @@ public class FinancialTracker {
                     // Prompt the user to enter a vendor name, then generate a report for all transactions
                     System.out.println("Vendor Name: ");
                     String vendor = scanner.nextLine();
-                    printTableHeader();
+
+                    Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getVendor().equalsIgnoreCase(vendor)) {
-                            printTable(t);
+                            Tables.fillReportsTable(t);
                         }
                     }
                     break;
                 case "6":
-                    System.out.println("\n Filter Transaction by Date");
+                    System.out.println("\nFilter Transaction by Date");
                     System.out.print("Start Date: ");
                     LocalDate startDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
                     System.out.print("Start Date: ");
                     LocalDate endDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
                     filterTransactionsByDate(startDate,endDate);
+                    break;
+                case "7":
+                    System.out.println("Filter Transactions by Vendor");
                     break;
                 case "0":
                     running = false;
@@ -296,39 +300,29 @@ public class FinancialTracker {
         }
     }
 
-    public static void printTableHeader() {
-        System.out.println(String.format("%s", "------------------------------------------------------------------------------------------------------------------------"));
-        System.out.println(String.format("%-25s %-25s %-30s %-25s %-25s", "Date", "Time",
-                "Description", "Vendor", "Amount"));
-        System.out.println(String.format("%s", "------------------------------------------------------------------------------------------------------------------------"));
-    }
-
-    public static void printTable(Transaction t) {
-        System.out.println(String.format("%-25s %-25s %-30s %-25s %-25s", t.getDate(), t.getTime(),
-                t.getDescription(), t.getVendor(), t.getAmount()));
-    }
-
     private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
         // This method filters the transactions by date and prints a report to the console.
-        // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
+        boolean found = false;
+
+        Tables.reportsHeader();
         for (Transaction t: transactions) {
             if (t.getDate().isBefore(endDate) && t.getDate().isAfter(startDate)) {
-                    printTableHeader();
-                    printTable(t);
+                    Tables.fillReportsTable(t);
+                    found = true;
                 }
             }
+
+        if (found == false) {
+            System.out.println("no results.");
         }
-        // The method loops through the transactions list and checks each transaction's date against the date range.
-        // Transactions that fall within the date range are printed to the console.
-        // If no transactions fall within the date range, the method prints a message indicating that there are no results.
     }
 
-    private static void filterTransactionsByVendor(String vendor) {
+/*    private static void filterTransactionsByVendor(String vendor) {
         // This method filters the transactions by vendor and prints a report to the console.
         // It takes one parameter: vendor, which represents the name of the vendor to filter by.
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }
+    }*/
 
 }
