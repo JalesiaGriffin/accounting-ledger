@@ -24,17 +24,18 @@ public class FinancialTracker {
 
     public static void main(String[] args) {
         loadTransactions(FILE_NAME);
+        transactions.sort(Transaction.TransactionDate);
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
         while (running) {
-            System.out.println("\n" + ConsoleColors.WHITE_BOLD
-                    +"Welcome to TransactionApp" + ConsoleColors.RESET);
-            System.out.println("D) Add Deposit");
+            System.out.println("\n" + ConsoleColors.WHITE_BOLD_BRIGHT + ConsoleColors.PURPLE_BACKGROUND
+                    + "Welcome to TransactionApp" + ConsoleColors.RESET);
+            System.out.println(ConsoleColors.WHITE_BOLD + "D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
             System.out.println("X) Exit");
-            System.out.print("Choose an option: ");
+            System.out.print("Choose an option: " + ConsoleColors.RESET);
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
@@ -110,7 +111,7 @@ public class FinancialTracker {
 
     private static void addPayment(Scanner scanner) {
         // Prompt user for payment info
-        System.out.println("\nAdd a Payment");
+        System.out.println(ConsoleColors.GREEN_BOLD + "\nAdd a Payment" + ConsoleColors.RESET);
         System.out.print("Payment Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
 
@@ -150,7 +151,7 @@ public class FinancialTracker {
     private static void ledgerMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("\nLedger");
+            System.out.println(ConsoleColors.BLUE_BOLD + "\nLedger" + ConsoleColors.RESET);
             System.out.println("A) All");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
@@ -174,7 +175,7 @@ public class FinancialTracker {
                     reportsMenu(scanner);
                     break;
                 case "H":
-                    running = false;
+                  running = false;
                 default:
                     System.out.println("Invalid option");
                     break;
@@ -213,7 +214,7 @@ public class FinancialTracker {
     private static void reportsMenu(Scanner scanner) {
         boolean running = true;
         while (running) {
-            System.out.println("\nReports");
+            System.out.println(ConsoleColors.YELLOW_BOLD + "\nReports" + ConsoleColors.RESET);
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
@@ -225,7 +226,8 @@ public class FinancialTracker {
 
             String input = scanner.nextLine().trim();
             LocalDate date = LocalDate.now();
-            LocalDate previousMonth = LocalDate.now().minusMonths(1);
+            LocalDate previousMonth = date.minusMonths(1);
+            LocalDate previousYear = date.minusYears(1);
 
             switch (input) {
                 case "1":
@@ -233,7 +235,7 @@ public class FinancialTracker {
                     Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
-                            if (t.getDate().getMonth() == date.getMonth()) {
+                            if (t.getDate().getMonthValue() == date.getMonthValue()) {
                                 Tables.fillReportsTable(t);
                             }
                         }
@@ -244,7 +246,7 @@ public class FinancialTracker {
                     Tables.reportsHeader();
                     for (Transaction t: transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
-                            if (t.getDate().withMonth(previousMonth.getMonthValue()) == previousMonth) {
+                            if (t.getDate().getMonthValue() == previousMonth.getMonthValue()) {
                                 Tables.fillReportsTable(t);
                             }
                         }
@@ -263,7 +265,7 @@ public class FinancialTracker {
                     // Previous year
                     Tables.reportsHeader();
                     for (Transaction t: transactions) {
-                        if (t.getDate().minusYears(1).getYear() == date.minusYears(1).getYear()) {
+                        if (t.getDate().getYear() == previousYear.getYear()) {
                             Tables.fillReportsTable(t);
                         }
                     }
@@ -281,15 +283,19 @@ public class FinancialTracker {
                     }
                     break;
                 case "6":
-                    System.out.println("\nFilter Transaction by Date");
+                    System.out.println("\nCustom Search (insert field(s) to filter)");
                     System.out.print("Start Date: ");
                     LocalDate startDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+
                     System.out.print("Start Date: ");
                     LocalDate endDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
-                    filterTransactionsByDate(startDate,endDate);
-                    break;
-                case "7":
-                    System.out.println("Filter Transactions by Vendor");
+
+                    System.out.println("Description: ");
+                    String description = scanner.nextLine();
+
+                    System.out.println("Vendor: ");
+                    vendor = scanner.nextLine();
+
                     break;
                 case "0":
                     running = false;
@@ -321,6 +327,11 @@ public class FinancialTracker {
         // This method filters the transactions by vendor and prints a report to the console.
         // It takes one parameter: vendor, which represents the name of the vendor to filter by.
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
+        for (Transaction t: transactions) {
+            if (t.getVendor().contains(vendor)) {
+                Tables
+            }
+        }
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }*/
