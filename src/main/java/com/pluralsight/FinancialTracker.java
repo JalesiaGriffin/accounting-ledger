@@ -219,19 +219,23 @@ public class FinancialTracker {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
+            System.out.println("(6) Filter Transaction by Date");
             System.out.println("0) Back");
-            System.out.print("Choose an option:");
+            System.out.print("Choose an option: ");
 
             String input = scanner.nextLine().trim();
             LocalDate date = LocalDate.now();
+            LocalDate previousMonth = LocalDate.now().minusMonths(1);
 
             switch (input) {
                 case "1":
                     // Current month
                     printTableHeader();
                     for (Transaction t: transactions) {
-                        if (t.getDate().getMonth() == date.getMonth()) {
-                            printTable(t);
+                        if (t.getDate().getYear() == date.getYear()) {
+                            if (t.getDate().getMonth() == date.getMonth()) {
+                                printTable(t);
+                            }
                         }
                     }
                     break;
@@ -239,8 +243,10 @@ public class FinancialTracker {
                     // Previous month
                     printTableHeader();
                     for (Transaction t: transactions) {
-                        if (t.getDate().now().minusMonths(1).getDayOfMonth() == date.now().minusMonths(1).getDayOfMonth()) {
-                            printTable(t);
+                        if (t.getDate().getYear() == date.getYear()) {
+                            if (t.getDate().withMonth(previousMonth.getMonthValue()) == previousMonth) {
+                                printTable(t);
+                            }
                         }
                     }
                     break;
@@ -273,6 +279,14 @@ public class FinancialTracker {
                         }
                     }
                     break;
+                case "6":
+                    System.out.println("\n Filter Transaction by Date");
+                    System.out.print("Start Date: ");
+                    LocalDate startDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+                    System.out.print("Start Date: ");
+                    LocalDate endDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+                    filterTransactionsByDate(startDate,endDate);
+                    break;
                 case "0":
                     running = false;
                 default:
@@ -294,9 +308,10 @@ public class FinancialTracker {
                 t.getDescription(), t.getVendor(), t.getAmount()));
     }
 
-/*    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
+    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
+
         // The method loops through the transactions list and checks each transaction's date against the date range.
         // Transactions that fall within the date range are printed to the console.
         // If no transactions fall within the date range, the method prints a message indicating that there are no results.
@@ -308,6 +323,6 @@ public class FinancialTracker {
         // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
         // Transactions with a matching vendor name are printed to the console.
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }*/
+    }
 
 }
