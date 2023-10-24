@@ -311,7 +311,13 @@ public class FinancialTracker {
     private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
         // This method filters the transactions by date and prints a report to the console.
         // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
-
+        for (Transaction t: transactions) {
+            if (t.getDate().isBefore(endDate) && t.getDate().isAfter(startDate)) {
+                    printTableHeader();
+                    printTable(t);
+                }
+            }
+        }
         // The method loops through the transactions list and checks each transaction's date against the date range.
         // Transactions that fall within the date range are printed to the console.
         // If no transactions fall within the date range, the method prints a message indicating that there are no results.
