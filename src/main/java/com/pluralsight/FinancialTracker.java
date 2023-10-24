@@ -2,7 +2,6 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Scanner;
 
 public class FinancialTracker {
@@ -31,11 +29,11 @@ public class FinancialTracker {
         while (running) {
             System.out.println("\n" + ConsoleColors.WHITE_BOLD_BRIGHT + ConsoleColors.PURPLE_BACKGROUND
                     + "Welcome to TransactionApp" + ConsoleColors.RESET);
-            System.out.println(ConsoleColors.WHITE_BOLD + "D) Add Deposit");
+            System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
             System.out.println("X) Exit");
-            System.out.print("Choose an option: " + ConsoleColors.RESET);
+            System.out.print("Choose an option: ");
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
@@ -85,14 +83,12 @@ public class FinancialTracker {
 
         System.out.print("Amount: ");
         double amount = scanner.nextDouble();
-        scanner.nextDouble();
 
         // The amount should be a positive number.
         while (amount < 0) {
             System.out.println("Invalid. Enter a positive value.");
             System.out.print("Amount: ");
             amount = scanner.nextDouble();
-            scanner.nextLine();
         }
 
         // Add to transactions
@@ -101,7 +97,7 @@ public class FinancialTracker {
         //update transactions.csv
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
-            writer.write(date + "|" + time + "|Deposit|" + vendor + "|" + amount);
+            writer.write(date + "|" + time + "|Deposit|" + vendor + "|" + amount + "\n");
             writer.close();
 
         } catch (Exception e) {
@@ -123,14 +119,13 @@ public class FinancialTracker {
 
         System.out.print("Amount: ");
         double amount = scanner.nextDouble();
-        scanner.nextLine();
+
 
         // The amount should be a positive number
         while (amount < 0) {
             System.out.println("Invalid. Enter a positive value.");
             System.out.print("Amount: ");
             amount = scanner.nextDouble();
-            scanner.nextLine();
         }
 
         amount *= -1;
@@ -141,7 +136,7 @@ public class FinancialTracker {
         // Update transactions.csv
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
-            writer.write(date + "|" + time + "|Payment|" + vendor + "|" + amount);
+            writer.write(date + "|" + time + "|Payment|" + vendor + "|" + amount + "\n");
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -162,23 +157,12 @@ public class FinancialTracker {
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
-                case "A":
-                    displayLedger();
-                    break;
-                case "D":
-                    displayDeposits();
-                    break;
-                case "P":
-                    displayPayments();
-                    break;
-                case "R":
-                    reportsMenu(scanner);
-                    break;
-                case "H":
-                  running = false;
-                default:
-                    System.out.println("Invalid option");
-                    break;
+                case "A" -> displayLedger();
+                case "D" -> displayDeposits();
+                case "P" -> displayPayments();
+                case "R" -> reportsMenu(scanner);
+                case "H" -> running = false;
+                default -> System.out.println("Invalid option");
             }
         }
     }
@@ -220,7 +204,7 @@ public class FinancialTracker {
             System.out.println("3) Year To Date");
             System.out.println("4) Previous Year");
             System.out.println("5) Search by Vendor");
-            System.out.println("6) Filter Transaction by Date");
+            System.out.println("6) Custom Search");
             System.out.println("0) Back");
             System.out.print("Choose an option: ");
 
@@ -228,6 +212,7 @@ public class FinancialTracker {
             LocalDate date = LocalDate.now();
             LocalDate previousMonth = date.minusMonths(1);
             LocalDate previousYear = date.minusYears(1);
+            boolean found = false;
 
             switch (input) {
                 case "1":
@@ -237,8 +222,12 @@ public class FinancialTracker {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().getMonthValue() == date.getMonthValue()) {
                                 Tables.fillReportsTable(t);
+                                found = true;
                             }
                         }
+                    }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
                 case "2":
@@ -248,26 +237,39 @@ public class FinancialTracker {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().getMonthValue() == previousMonth.getMonthValue()) {
                                 Tables.fillReportsTable(t);
+                                found = true;
                             }
                         }
+                    }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
                 case "3":
                     // Current year
                     Tables.reportsHeader();
                     for (Transaction t: transactions) {
-                    if (t.getDate().getYear() == date.getYear()) {
-                        Tables.fillReportsTable(t);
+                        if (t.getDate().getYear() == date.getYear()) {
+                            Tables.fillReportsTable(t);
+                            found = true;
+                        }
                     }
-                }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
+                    }
                     break;
                 case "4":
                     // Previous year
                     Tables.reportsHeader();
+
                     for (Transaction t: transactions) {
                         if (t.getDate().getYear() == previousYear.getYear()) {
                             Tables.fillReportsTable(t);
+                            found = true;
                         }
+                    }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
                 case "5":
@@ -279,61 +281,63 @@ public class FinancialTracker {
                     for (Transaction t: transactions) {
                         if (t.getVendor().equalsIgnoreCase(vendor)) {
                             Tables.fillReportsTable(t);
+                            found = true;
                         }
+                    }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
                 case "6":
                     System.out.println("\nCustom Search (insert field(s) to filter)");
-                    System.out.print("Start Date: ");
-                    LocalDate startDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+                    System.out.print("Start Date (yyyy-MM-dd) or 'null': ");
+                    String userStartDateInput = scanner.nextLine();
+                    LocalDate startDate = null;
 
-                    System.out.print("Start Date: ");
-                    LocalDate endDate = LocalDate.parse(scanner.nextLine(), DATE_FORMATTER);
+                    if(!userStartDateInput.equalsIgnoreCase("null")){
+                        startDate = LocalDate.parse(userStartDateInput, DATE_FORMATTER);
+                    }
 
-                    System.out.println("Description: ");
+                    System.out.print("End Date (yyyy-MM-dd) or 'null': ");
+                    String userEndDateInput = scanner.nextLine();
+                    LocalDate endDate = null;
+
+                    if(!userEndDateInput.equalsIgnoreCase("null")){
+                        endDate = LocalDate.parse(userEndDateInput, DATE_FORMATTER);
+                    }
+
+                    System.out.print("Description: ");
                     String description = scanner.nextLine();
 
-                    System.out.println("Vendor: ");
+                    System.out.print("Vendor: ");
                     vendor = scanner.nextLine();
 
+                    System.out.print("Amount: ");
+                    double amount = scanner.nextDouble();
+
+                    Tables.reportsHeader();
+
+                    for (Transaction t : transactions) {
+                        if ((startDate == null || t.getDate().isAfter(startDate.minusDays(1))) &&
+                            (endDate == null || t.getDate().isBefore(endDate.minusDays(1))) &&
+                            (description == null || t.getDescription().contains(description)) &&
+                            (vendor == null || t.getVendor().contains(vendor)) &&
+                            (amount == 0 || t.getAmount() == amount)) {
+                            Tables.fillReportsTable(t);
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
+                    }
                     break;
                 case "0":
                     running = false;
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
         }
     }
-
-    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
-        // This method filters the transactions by date and prints a report to the console.
-        boolean found = false;
-
-        Tables.reportsHeader();
-        for (Transaction t: transactions) {
-            if (t.getDate().isBefore(endDate) && t.getDate().isAfter(startDate)) {
-                    Tables.fillReportsTable(t);
-                    found = true;
-                }
-            }
-
-        if (found == false) {
-            System.out.println("no results.");
-        }
-    }
-
-/*    private static void filterTransactionsByVendor(String vendor) {
-        // This method filters the transactions by vendor and prints a report to the console.
-        // It takes one parameter: vendor, which represents the name of the vendor to filter by.
-        // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
-        for (Transaction t: transactions) {
-            if (t.getVendor().contains(vendor)) {
-                Tables
-            }
-        }
-        // Transactions with a matching vendor name are printed to the console.
-        // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }*/
-
 }
