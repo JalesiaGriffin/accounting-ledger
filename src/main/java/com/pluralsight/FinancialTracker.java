@@ -273,7 +273,7 @@ public class FinancialTracker {
                     }
                     break;
                 case "5":
-                    // Prompt the user to enter a vendor name, then generate a report for all transactions
+                    // By Vendor
                     System.out.println("Vendor Name: ");
                     String vendor = scanner.nextLine();
 
@@ -289,6 +289,7 @@ public class FinancialTracker {
                     }
                     break;
                 case "6":
+                    // Custom search
                     System.out.println("\nCustom Search (insert field(s) to filter)");
                     System.out.print("Start Date (yyyy-MM-dd) or 'null': ");
                     String userStartDateInput = scanner.nextLine();
@@ -306,14 +307,19 @@ public class FinancialTracker {
                         endDate = LocalDate.parse(userEndDateInput, DATE_FORMATTER);
                     }
 
-                    System.out.print("Description: ");
+                    System.out.print("Description or press enter: ");
                     String description = scanner.nextLine();
 
-                    System.out.print("Vendor: ");
+                    System.out.print("Vendor or press enter: ");
                     vendor = scanner.nextLine();
 
-                    System.out.print("Amount: ");
-                    double amount = scanner.nextDouble();
+                    System.out.print("Amount or 'null': ");
+                    String userAmountInput = scanner.nextLine();
+                    double amount = 0;
+
+                    if(!userAmountInput.equalsIgnoreCase("null")){
+                        amount = Double.parseDouble(userAmountInput);
+                    }
 
                     Tables.reportsHeader();
 
