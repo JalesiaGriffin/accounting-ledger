@@ -78,6 +78,9 @@ public class FinancialTracker {
         System.out.print("Deposit Time (HH:mm:ss): ");
         LocalTime time = LocalTime.parse(scanner.nextLine(), TIME_FORMATTER);
 
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine();
 
@@ -92,12 +95,12 @@ public class FinancialTracker {
         }
 
         // Add to transactions
-        transactions.add(new Transaction(new Deposit(date, time, vendor, amount)));
+        transactions.add(new Transaction(date, time, description, vendor, amount));
 
         //update transactions.csv
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
-            writer.write(date + "|" + time + "|Deposit|" + vendor + "|" + amount + "\n");
+            writer.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,6 +115,9 @@ public class FinancialTracker {
 
         System.out.print("Payment Time (HH:mm:ss): ");
         LocalTime time = LocalTime.parse(scanner.nextLine(), TIME_FORMATTER);
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
 
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine();
@@ -130,12 +136,13 @@ public class FinancialTracker {
         amount *= -1;
 
         // Add payment to the `transactions` ArrayList
-        transactions.add(new Transaction(new Payment(date, time, vendor, amount)));
+        transactions.add(new Transaction(date, time, description, vendor, amount));
 
         // Update transactions.csv
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME,true));
-            writer.write(date + "|" + time + "|Payment|" + vendor + "|" + amount + "\n");
+            writer.write(date + "|" + time + "|" + description + "|" + vendor + "|" + amount);
+            writer.newLine();
             writer.close();
         } catch (Exception e) {
             e.printStackTrace();
