@@ -29,4 +29,6 @@ A CLI application for financial management. The user is given options to add pay
 ![deposit ledger screen](imgs/deposit-ledger.gif)
 ### Payment Ledger
 ![home screen](imgs/payment-ledger.gif)
+### Reports Menu
+![reports menu](imgs/reports-menu.gif)
 
