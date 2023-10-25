@@ -99,7 +99,6 @@ public class FinancialTracker {
             BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true));
             writer.write(date + "|" + time + "|Deposit|" + vendor + "|" + amount + "\n");
             writer.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -157,9 +156,18 @@ public class FinancialTracker {
             String input = scanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
-                case "A" -> displayLedger();
-                case "D" -> displayDeposits();
-                case "P" -> displayPayments();
+                case "A" -> {
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "All Transactions" + ConsoleColors.RESET);
+                    displayLedger();
+                }
+                case "D" -> {
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Deposits" + ConsoleColors.RESET);
+                    displayDeposits();
+                }
+                case "P" -> {
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Payments" + ConsoleColors.RESET);
+                    displayPayments();
+                }
                 case "R" -> reportsMenu(scanner);
                 case "H" -> running = false;
                 default -> System.out.println("Invalid option");
@@ -179,7 +187,7 @@ public class FinancialTracker {
         // Table of deposits
         Tables.ledgerHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().toLowerCase().contains("deposit")) {
+            if (t.getAmount() > 0) {
                 Tables.fillLedgerTable(t);
             }
         }
@@ -189,7 +197,7 @@ public class FinancialTracker {
         // Table of payments
         Tables.ledgerHeader();
         for (Transaction t: transactions) {
-            if (t.getDescription().toLowerCase().contains("payment")) {
+            if (t.getAmount() < 0) {
                 Tables.fillLedgerTable(t);
             }
         }
@@ -214,11 +222,11 @@ public class FinancialTracker {
             LocalDate previousYear = date.minusYears(1);
             boolean found = false;
 
-            switch (input) {
+            switch (input) {// Current month
                 case "1":
-                    // Current month
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Current Month" + ConsoleColors.RESET);
                     Tables.reportsHeader();
-                    for (Transaction t: transactions) {
+                    for (Transaction t : transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().getMonthValue() == date.getMonthValue()) {
                                 Tables.fillReportsTable(t);
@@ -230,10 +238,11 @@ public class FinancialTracker {
                         System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
+                // Previous month
                 case "2":
-                    // Previous month
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Previous Month" + ConsoleColors.RESET);
                     Tables.reportsHeader();
-                    for (Transaction t: transactions) {
+                    for (Transaction t : transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
                             if (t.getDate().getMonthValue() == previousMonth.getMonthValue()) {
                                 Tables.fillReportsTable(t);
@@ -245,10 +254,11 @@ public class FinancialTracker {
                         System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
+                // Current year
                 case "3":
-                    // Current year
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Current Year" + ConsoleColors.RESET);
                     Tables.reportsHeader();
-                    for (Transaction t: transactions) {
+                    for (Transaction t : transactions) {
                         if (t.getDate().getYear() == date.getYear()) {
                             Tables.fillReportsTable(t);
                             found = true;
@@ -258,11 +268,11 @@ public class FinancialTracker {
                         System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
+                // Previous year
                 case "4":
-                    // Previous year
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Previous Year" + ConsoleColors.RESET);
                     Tables.reportsHeader();
-
-                    for (Transaction t: transactions) {
+                    for (Transaction t : transactions) {
                         if (t.getDate().getYear() == previousYear.getYear()) {
                             Tables.fillReportsTable(t);
                             found = true;
@@ -272,13 +282,13 @@ public class FinancialTracker {
                         System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
+                // By Vendor
                 case "5":
-                    // By Vendor
-                    System.out.println("Vendor Name: ");
+                    System.out.print("Vendor Name: ");
                     String vendor = scanner.nextLine();
-
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + vendor + ConsoleColors.RESET);
                     Tables.reportsHeader();
-                    for (Transaction t: transactions) {
+                    for (Transaction t : transactions) {
                         if (t.getVendor().equalsIgnoreCase(vendor)) {
                             Tables.fillReportsTable(t);
                             found = true;
@@ -288,47 +298,39 @@ public class FinancialTracker {
                         System.out.println(ConsoleColors.RED_BOLD + "no results." + ConsoleColors.RESET);
                     }
                     break;
+                // Custom search
                 case "6":
-                    // Custom search
                     System.out.println("\nCustom Search (insert field(s) to filter)");
                     System.out.print("Start Date (yyyy-MM-dd) or 'null': ");
                     String userStartDateInput = scanner.nextLine();
                     LocalDate startDate = null;
-
-                    if(!userStartDateInput.equalsIgnoreCase("null")){
+                    if (!userStartDateInput.equalsIgnoreCase("null")) {
                         startDate = LocalDate.parse(userStartDateInput, DATE_FORMATTER);
                     }
-
                     System.out.print("End Date (yyyy-MM-dd) or 'null': ");
                     String userEndDateInput = scanner.nextLine();
                     LocalDate endDate = null;
-
-                    if(!userEndDateInput.equalsIgnoreCase("null")){
+                    if (!userEndDateInput.equalsIgnoreCase("null")) {
                         endDate = LocalDate.parse(userEndDateInput, DATE_FORMATTER);
                     }
-
                     System.out.print("Description or press enter: ");
                     String description = scanner.nextLine();
-
                     System.out.print("Vendor or press enter: ");
                     vendor = scanner.nextLine();
-
                     System.out.print("Amount or 'null': ");
                     String userAmountInput = scanner.nextLine();
                     double amount = 0;
-
-                    if(!userAmountInput.equalsIgnoreCase("null")){
+                    if (!userAmountInput.equalsIgnoreCase("null")) {
                         amount = Double.parseDouble(userAmountInput);
                     }
-
+                    System.out.println("\n" + ConsoleColors.GREEN_BOLD + "Custom Search" + ConsoleColors.RESET);
                     Tables.reportsHeader();
-
                     for (Transaction t : transactions) {
                         if ((startDate == null || t.getDate().isAfter(startDate.minusDays(1))) &&
-                            (endDate == null || t.getDate().isBefore(endDate.minusDays(1))) &&
-                            (description == null || t.getDescription().contains(description)) &&
-                            (vendor == null || t.getVendor().contains(vendor)) &&
-                            (amount == 0 || t.getAmount() == amount)) {
+                                (endDate == null || t.getDate().isBefore(endDate.minusDays(1))) &&
+                                (description == null || t.getDescription().contains(description)) &&
+                                (vendor == null || t.getVendor().contains(vendor)) &&
+                                (amount == 0 || t.getAmount() == amount)) {
                             Tables.fillReportsTable(t);
                             found = true;
                         }
