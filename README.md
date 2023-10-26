@@ -82,5 +82,15 @@ This eliminated repeat formatting and helped the main class maintain readability
 - [ ] Budget Management
 - [ ] User Registration
 
-## Thanks
+## Acknowledgements
+[@RayMaroun](https://github.com/RayMaroun): Provided project skeleton
+
+[@CallMeCJ_](https://github.com/CallMeCJUnderscore): Created sorting algorithm
+
+[@WhiteFang34](https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println#comment6599876_5762502): ConsoleColors class
+
+## Contact
+Email: jalesiagriffin@outlook.com
+
+Project Link:[https://github.com/JalesiaGriffin/financial-tracker](https://github.com/JalesiaGriffin/financial-tracker.git)
 
