@@ -49,6 +49,18 @@ In your terminal, navigate to the directory where you'll keep the project and cl
 - Deposit Ledger
 - Payment Ledger
 
+### **Special Feature**
+```
+Public class Tables
+```
+
+Within this class I created 4 methods that allowed me to create tables for both
+ledgers and reports. This enhanced my code because it allowed me to just
+simply call on the class and a specific function as follows:
+```
+Tables.fillLedgerTable(t);
+```
+This eliminated repeat formatting and helped the main class maintain readability.
 ## Demo
 ### Home Screen
 ![home screen](imgs/home.gif)
@@ -66,5 +78,9 @@ In your terminal, navigate to the directory where you'll keep the project and cl
 ![reports menu](imgs/reports-menu.gif)
 
 ## Future Work
+- [ ] Expense Tracking (by categories)
+- [ ] Budget Management
+- [ ] User Registration
 
 ## Thanks
+
