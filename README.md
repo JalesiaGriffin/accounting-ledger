@@ -11,9 +11,9 @@ A CLI application for financial management. The user is given options to add pay
 
 - [Demo](#demo)
 
-- [Future Work](#features)
+- [Future Work](#future-work)
 
-- [Thanks](#thanks)
+- [Acknowledgements](#acknowledgements)
 
 ## Setup
 **Prerequisites**
@@ -36,18 +36,18 @@ In your terminal, navigate to the directory where you'll keep the project and cl
 ```
 
 ## Features
-- Add Deposit
-- Add Payment
-- Reports
+- [Add Deposit](#add-deposit)
+- [Add Payment](#add-payment)
+- [Reports Menu](#reports-menu)
   - Month to Date
   - Previous Month
   - Year to Date
   - Previous Year
   - By Vendor
   - Custom Search
-- Transactions Ledger
-- Deposit Ledger
-- Payment Ledger
+- [Transactions Ledger](#transactions-ledger)
+- [Deposit Ledger](#deposit-ledger)
+- [Payment Ledger](#payment-ledger)
 
 ### **Special Feature**
 ```
@@ -68,7 +68,7 @@ This eliminated repeat formatting and helped the main class maintain readability
 ![add deposit screen](imgs/add-deposit.gif)
 ### Add Payment
 ![add payment screen](imgs/add-payment.gif)
-### Ledger
+### Transactions Ledger
 ![ledger screen](imgs/ledger.gif)
 ### Deposit Ledger
 ![deposit ledger screen](imgs/deposit-ledger-screen.gif)
