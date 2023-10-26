@@ -38,6 +38,9 @@ In your terminal, navigate to the directory where you'll keep the project and cl
 ## Features
 - [Add Deposit](#add-deposit)
 - [Add Payment](#add-payment)
+- [Transactions Ledger](#transactions-ledger)
+- [Deposit Ledger](#deposit-ledger)
+- [Payment Ledger](#payment-ledger)
 - [Reports Menu](#reports-menu)
   - Month to Date
   - Previous Month
@@ -45,9 +48,6 @@ In your terminal, navigate to the directory where you'll keep the project and cl
   - Previous Year
   - By Vendor
   - Custom Search
-- [Transactions Ledger](#transactions-ledger)
-- [Deposit Ledger](#deposit-ledger)
-- [Payment Ledger](#payment-ledger)
 
 ### **Special Feature**
 ```
