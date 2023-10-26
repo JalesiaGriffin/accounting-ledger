@@ -5,15 +5,15 @@ A CLI application for financial management. The user is given options to add pay
 
 ## Overview
 
-- Setup
+- [Setup](#setup)
 
-- Features
+- [Features](#features)
 
-- Demo
+- [Demo](#demo)
 
-- Future Work
+- [Future Work](#features)
 
-- Thanks
+- [Thanks](#thanks)
 
 ## Setup
 **Prerequisites**
