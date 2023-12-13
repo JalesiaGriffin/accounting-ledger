@@ -1,4 +1,4 @@
-# Financial Tracker
+# Accounting Ledger
 
 A CLI application for financial management. The user is given options to add payments, make payments, and view ledgers. Within the ledgers screen, the user is also able to run pre-defined reports as well as a custom search report.
 
