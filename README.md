@@ -32,7 +32,7 @@ If they are not installed, download and install [Java](https://www.oracle.com/ja
 
 In your terminal, navigate to the directory where you'll keep the project and clone this repository to your local machine. You can do this using the following command:
 ```
-     git clone https://github.com/JalesiaGriffin/financial-tracker.git
+     git clone https://github.com/JalesiaGriffin/accounting-ledger.git
 ```
 
 ## Features
@@ -92,5 +92,5 @@ This eliminated repeat formatting and helped the main class maintain readability
 ## Contact
 Email: jalesiagriffin@outlook.com
 
-Project Link:[https://github.com/JalesiaGriffin/financial-tracker](https://github.com/JalesiaGriffin/financial-tracker.git)
+Project Link:[https://github.com/JalesiaGriffin/accounting-ledger](https://github.com/JalesiaGriffin/accounting-ledger)
 
